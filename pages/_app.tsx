@@ -15,7 +15,7 @@ export default ({ Component, pageProps }: AppProps) => {
   return (
     <div id="__app" className={className}>
       <Head>
-        <title>Lunar</title>
+        <title>Checkout</title>
         <meta charSet="utf-8" />
         <meta name="robots" content="noindex, nofollow" />
         <meta

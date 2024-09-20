@@ -20,8 +20,8 @@ export const createPaymentService = (app: Express, endpoint: string) => {
     methods: ['card', 'mobilePay', 'applePay'],
     merchant: {
       key: crypto.randomUUID(),
-      logo: 'https://cdn.prod.lunarway.com/squad_logos/squad_Astro.png',
-      name: 'Lunar',
+      logo: 'https://fakeimg.pl/200x200/231070/ffffff?text=Logo&font=bebas',
+      name: 'Fake A/S',
     }
   }));
 

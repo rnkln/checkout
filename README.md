@@ -35,7 +35,7 @@ npm run dev   // Run the development server
         </tr>
         <tr>
             <td valign="top">redirect</td>
-            <td>The URL to redirect to when payment is successful.<br><br><b>Example:</b> https://lunar.app</td>
+            <td>The URL to redirect to when payment is successful.<br><br><b>Example:</b> https://example.com</td>
         </tr>
     </tbody>
 </table>

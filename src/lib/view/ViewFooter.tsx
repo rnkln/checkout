@@ -1,13 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { Flex } from '@matter/flex';
 import { Text } from '@matter/typography';
-import { vars } from '@matter/theme/contract.css';
 import { ApplePayIcon } from '@lib/applepay/ApplePayIcon';
 import { MobilePayIcon } from '@lib/mobilepay/MobilePayIcon';
 import { CardIconVisa } from '@lib/card/CardIconVisa';
 import { CardIconMastercard } from '@lib/card/CardIconMastercard';
 import { Method } from '@features/payment/client/payment_types';
-import Lunar from '@public/logo/lunar.svg';
+import Logoipsum from '@public/logo/logoipsum.svg';
 
 import * as classes from './ViewFooter.css';
 
@@ -26,7 +25,7 @@ export const ViewFooter = ({ methods }: ViewFooterProps) => {
       data-test-id="pay-view-footer"
     >
       <Flex gap={0.5} flexDirection="column">
-        <Lunar fill={vars.palette.surface.quaternary.main} width={54} />
+        <Logoipsum width={54} />
 
         <Text color="quaternary" className={classes.message}>
           {t('secure-payments')}
