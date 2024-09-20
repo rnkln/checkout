@@ -1,0 +1,33 @@
+# Ignore everything
+*
+
+# Include these folders
+!.github
+!.github/**/*
+!src/
+!src/**/*
+!mock
+!mock/**/*
+!pages
+!pages/**/*
+!public
+!public/**/*
+!scripts
+!scripts/**/*
+!cypress
+!cypress/**/*
+
+# Include these files
+!.browserslistrc
+!.editorconfig
+!.env.development
+!.gitignore
+!.tool-versions
+!cypress.config.ts
+!docker-compose.yml
+!Dockerfile.mock
+!next.config.js
+!package.json
+!pnpm-lock.yaml
+!README.md
+!tsconfig.json

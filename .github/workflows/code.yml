@@ -1,0 +1,172 @@
+name: Code
+
+on:
+  pull_request:
+    branches:
+      - master
+
+env:
+  CACHE_KEY: pnpm-${{ github.run_id }}
+
+jobs:
+  install:
+    name: Install
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache.outputs.cache-key }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+          node-version-file: '.nvmrc'
+          scope: '@lunarway'
+          registry-url: 'https://npm.pkg.github.com'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.IOS_BOT_TOKEN }}
+
+      - name: Install dependencies
+        run: pnpm install
+        env:
+          CYPRESS_INSTALL_BINARY: 0
+
+      - name: Setup environment
+        run: pnpm run init
+
+      - name: Setup Cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ env.CACHE_KEY }}
+          path: .
+
+  typing:
+    name: Typing
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read Cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ env.CACHE_KEY }}
+          path: .
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Run TypeScript
+        run: pnpm run type
+
+  linting:
+    name: Linting
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read Cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ env.CACHE_KEY }}
+          path: .
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Run Linter
+        run: pnpm run lint
+
+  prettier:
+    name: Prettier
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read Cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ env.CACHE_KEY }}
+          path: .
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Run Prettier
+        run: pnpm run prettier
+
+  localization:
+    name: Localization
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read Cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ env.CACHE_KEY }}
+          path: .
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Run Localization
+        run: pnpm run i18n check
+
+  test:
+    name: Test
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read Cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ env.CACHE_KEY }}
+          path: .
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Cypress Install
+        run: pnpm exec cypress install
+
+      - name: Cypress Test
+        uses: cypress-io/github-action@v4.2.0
+        with:
+          install: true
+          browser: chrome
+          config: 'viewportWidth=375,viewportHeight=667'
+          config-file: cypress.config.ts
+          start: pnpm run dev
+          wait-on: 'http://localhost:3000/'
+
+  build:
+    name: Build
+    needs: [typing, linting, prettier, localization, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read Cache
+        uses: actions/cache@v3
+        with:
+          key: ${{ env.CACHE_KEY }}
+          path: .
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Run Build
+        run: pnpm run build
