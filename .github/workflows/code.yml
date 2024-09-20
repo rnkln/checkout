@@ -18,20 +18,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
-
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          cache: 'pnpm'
-          node-version-file: '.nvmrc'
-          scope: '@lunarway'
-          registry-url: 'https://npm.pkg.github.com'
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.IOS_BOT_TOKEN }}
+      - name: Install tools
+        uses: asdf-vm/actions/install@v3
 
       - name: Install dependencies
         run: pnpm install
@@ -58,10 +46,8 @@ jobs:
           key: ${{ env.CACHE_KEY }}
           path: .
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+      - name: Install tools
+        uses: asdf-vm/actions/install@v3
 
       - name: Run TypeScript
         run: pnpm run type
@@ -77,10 +63,8 @@ jobs:
           key: ${{ env.CACHE_KEY }}
           path: .
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+      - name: Install tools
+        uses: asdf-vm/actions/install@v3
 
       - name: Run Linter
         run: pnpm run lint
@@ -96,10 +80,8 @@ jobs:
           key: ${{ env.CACHE_KEY }}
           path: .
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+      - name: Install tools
+        uses: asdf-vm/actions/install@v3
 
       - name: Run Prettier
         run: pnpm run prettier
@@ -115,10 +97,8 @@ jobs:
           key: ${{ env.CACHE_KEY }}
           path: .
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+      - name: Install tools
+        uses: asdf-vm/actions/install@v3
 
       - name: Run Localization
         run: pnpm run i18n check
@@ -134,10 +114,8 @@ jobs:
           key: ${{ env.CACHE_KEY }}
           path: .
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+      - name: Install tools
+        uses: asdf-vm/actions/install@v3
 
       - name: Cypress Install
         run: pnpm exec cypress install
@@ -163,10 +141,8 @@ jobs:
           key: ${{ env.CACHE_KEY }}
           path: .
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+      - name: Install tools
+        uses: asdf-vm/actions/install@v3
 
       - name: Run Build
         run: pnpm run build
