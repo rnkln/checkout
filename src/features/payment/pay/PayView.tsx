@@ -6,6 +6,7 @@ import { ViewContent } from '@lib/view/ViewContent';
 import { toUrlParams } from '@utils/toUrlParams';
 import { ViewHeader } from '@lib/view/ViewHeader';
 import { ViewFooter } from '@lib/view/ViewFooter';
+import { useVault } from '@features/vault/client/use_vault';
 
 import { usePaymentConfig, usePaymentPost } from '../client/use_payment';
 import { Amount } from '../client/payment_types';
@@ -25,6 +26,7 @@ export const PayView = () => {
   } = usePayParams();
 
   const { data: config, isLoading, isError } = usePaymentConfig();
+  const { mutateAsync: vault, isLoading: isVaulting } = useVault();
   const { mutateAsync: create, isLoading: isCreating } = usePaymentPost();
 
   const [amount, setAmount] = useState<Amount>(() => ({
@@ -32,48 +34,65 @@ export const PayView = () => {
     currency: currency ?? '',
   }));
 
-  const shouldShowAmountView = amount.decimal === '' || amount.currency === '';
-  const shouldShowMethodView = !shouldShowAmountView;
+  const isBusy = isVaulting || isCreating;
+  const hasAmount = amount.decimal !== '' && amount.currency !== '';
 
   const handleAmount = (result: Amount) => {
     setAmount(result);
-    
-    router.push(`/?${toUrlParams({
-      decimal: result.decimal,
-      currency: result.currency,
-      method,
-      redirect,
-      strategy
-    })}`, undefined, { shallow: true })
-  }
-
-  const handlePay = async (result: PayViewMethodsResult) => {
-    const { paymentId } = await create(
-      result.method === 'card'
-        ? {
-            amount,
-            card: {
-              number: result.values['cc-number'],
-              code: result.values['cc-csc'],
-              expiry: {
-                month: Number.parseInt(result.values['cc-exp'].slice(0, 2), 10),
-                year: Number.parseInt(
-                  `20${result.values['cc-exp'].slice(2)}`,
-                  10
-                ),
-              },
-            },
-          }
-        : { amount, [result.method as 'mobilePay']: true }
-    );
 
     router.push(
-      `/challenge?${toUrlParams({
-        id: paymentId,
+      `/?${toUrlParams({
+        decimal: result.decimal,
+        currency: result.currency,
+        method,
         redirect,
         strategy,
-      })}`
+      })}`,
+      undefined,
+      { shallow: true }
     );
+  };
+
+  const handlePay = async (result: PayViewMethodsResult) => {
+    if (result.method === 'card') {
+      const [number, code] = await vault([
+        { type: 'pcn', value: result.values['cc-number'] },
+        { type: 'pcsc', value: result.values['cc-csc'] },
+      ]);
+
+      const { paymentId } = await create({
+        amount,
+        card: {
+          code: code.token,
+          number: number.token,
+          expiry: {
+            month: Number.parseInt(result.values['cc-exp'].slice(0, 2), 10),
+            year: Number.parseInt(`20${result.values['cc-exp'].slice(2)}`, 10),
+          },
+        },
+      });
+
+      router.push(
+        `/challenge?${toUrlParams({
+          id: paymentId,
+          redirect,
+          strategy,
+        })}`
+      );
+    } else {
+      const { paymentId } = await create({
+        amount,
+        [result.method as 'mobilePay']: true,
+      });
+
+      router.push(
+        `/challenge?${toUrlParams({
+          id: paymentId,
+          redirect,
+          strategy,
+        })}`
+      );
+    }
   };
 
   if (isError) {
@@ -87,18 +106,18 @@ export const PayView = () => {
   return (
     <View data-test-id="pay-view">
       <ViewHeader
-        busy={isCreating}
-        amount={shouldShowMethodView ? amount : undefined}
+        busy={isBusy}
+        amount={hasAmount ? amount : undefined}
         merchant={config.merchant}
       />
 
       <ViewContent>
-        {shouldShowAmountView && (
+        {!hasAmount && (
           <PayViewAmount initialAmount={amount} onComplete={handleAmount} />
         )}
-        {shouldShowMethodView && (
+        {hasAmount && (
           <PayViewMethods
-            busy={isCreating}
+            busy={isBusy}
             methods={config.methods}
             preferred={method}
             onComplete={handlePay}
