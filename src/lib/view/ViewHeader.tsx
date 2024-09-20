@@ -62,10 +62,9 @@ export const ViewHeader = ({ busy, amount, merchant }: ViewHeaderProps) => {
 
       {amount && (
         <Amount
-          value={amount.decimal}
+          amount={amount}
           locale={i18n.language}
           color="primary"
-          currency={amount.currency}
           fontSize={5}
           fontWeight="medium"
           data-test-id="pay-view-amounts-amount"

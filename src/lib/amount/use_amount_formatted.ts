@@ -1,26 +1,27 @@
 import { useMemo } from 'react';
 
 export type Amount = {
-  value: string;
+  decimal: string;
+  currency: string;
 };
 
 export type AmountFormatterOptions = {
   locale: string;
-  currency: string;
+  amount: Amount;
 };
 
-export const useAmountFormatter = ({
+export const useAmountFormatted = ({
   locale,
-  currency,
+  amount,
 }: AmountFormatterOptions) => {
   const formatter = useMemo(
     () =>
       new Intl.NumberFormat(locale, {
         style: 'currency',
-        currency,
+        currency: amount.currency,
       }),
-    [locale, currency]
+    [locale, amount]
   );
 
-  return (value: string) => formatter.format(Number(value));
+  return formatter.format(Number(amount.decimal));
 };

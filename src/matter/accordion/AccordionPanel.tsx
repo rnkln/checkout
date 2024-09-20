@@ -82,7 +82,7 @@ export const AccordionPanel = ({
         style={contentStyle}
         aria-hidden={!expanded}
         aria-labelledby={headerId}
-        inert={!expanded ? '' : undefined}
+        inert={!expanded}
       >
         <div className={classes.accordionPanelInner}>{children}</div>
       </div>

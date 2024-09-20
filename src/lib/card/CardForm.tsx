@@ -4,8 +4,6 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { useId } from '@matter/utils/useId';
 import { Flex } from '@matter/flex';
 
-import { PaymentAmount } from '../../features/payment/client/payment_types';
-
 import { CardFormButton } from './CardFormButton';
 import { CardFormCodeField } from './CardFormCodeField';
 import { CardFormExpiryField } from './CardFormExpiryField';
@@ -21,7 +19,7 @@ import * as classes from './CardForm.css';
 export type CardFormProps = {
   id?: string;
   busy?: boolean;
-  amount?: PaymentAmount;
+  amount?: string;
   autoFocus?: boolean;
   defaultValues?: CardFormValuesPartial;
   onSubmit: (values: CardFormValues) => void;

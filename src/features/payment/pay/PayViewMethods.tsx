@@ -6,6 +6,7 @@ import { Accordion, AccordionPanel } from '@matter/accordion';
 import { ApplePayButton } from '@lib/applepay/ApplePayButton';
 import { MobilePayButton } from '@lib/mobilepay/MobilePayButton';
 import { toKebabCase } from '@utils/toKebabCase';
+import { useAmountFormatted } from '@lib/amount/use_amount_formatted';
 
 import { Amount, Method } from '../client/payment_types';
 import { CardForm } from '../../../lib/card/CardForm';
@@ -22,7 +23,7 @@ export type PayViewMethodsResult =
 
 export type PayViewMethodsProps = {
   busy?: boolean;
-  amount?: Amount;
+  amount: Amount;
   methods: Array<Method>;
   preferred?: Method;
   onComplete: (result: PayViewMethodsResult) => void;
@@ -35,7 +36,12 @@ export const PayViewMethods = ({
   preferred,
   onComplete,
 }: PayViewMethodsProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const amountFormatted = useAmountFormatted({
+    locale: i18n.language,
+    amount,
+  });
 
   const methodsSorted: Array<Method> = useMemo(
     () =>
@@ -50,9 +56,8 @@ export const PayViewMethods = ({
   const handleChange = (method: Method) => () => setExpanded(method);
 
   if (methodsSorted.length === 1) {
-    return renderMethod(methodsSorted[0], {
+    return renderMethod(methodsSorted[0], amountFormatted, {
       busy,
-      amount,
       autoFocus: true,
       onComplete,
     });
@@ -73,9 +78,8 @@ export const PayViewMethods = ({
           onChange={handleChange(method)}
         >
           <div style={{ padding: `${vars.spacing[2]} ${vars.spacing[4]}` }}>
-            {renderMethod(method, {
+            {renderMethod(method, amountFormatted, {
               busy,
-              amount,
               autoFocus: method === preferred,
               onComplete,
             })}
@@ -94,7 +98,10 @@ const getTitleByMethod = (t: TFunction, method: Method) => {
 
 const renderMethod = (
   method: Method,
-  props: Omit<PayViewMethodsProps, 'methods'> & { autoFocus?: boolean }
+  amount: string,
+  props: Omit<PayViewMethodsProps, 'amount' | 'methods'> & {
+    autoFocus?: boolean;
+  }
 ) => {
   switch (method) {
     case 'applePay':
@@ -114,7 +121,7 @@ const renderMethod = (
     case 'card':
       return (
         <CardForm
-          amount={props.amount}
+          amount={amount}
           autoFocus={props.autoFocus}
           busy={props.busy}
           onSubmit={(values) => props.onComplete({ method: 'card', values })}

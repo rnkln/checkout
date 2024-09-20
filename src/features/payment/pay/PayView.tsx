@@ -120,6 +120,7 @@ export const PayView = () => {
         {hasAmount && (
           <PayViewMethods
             busy={isBusy}
+            amount={amount}
             methods={config.methods}
             preferred={method}
             onComplete={handlePay}
