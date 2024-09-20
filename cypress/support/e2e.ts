@@ -12,6 +12,5 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
-import './payments';
 import './commands';
 import './assertions';

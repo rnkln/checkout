@@ -16,7 +16,6 @@ export const PollChallenge = ({ challenge, onResolve }: PollChallengeProps) => {
       const threshold = new Date(challenge.notBefore);
 
       if(now > threshold) {
-        console.log('check')
         const response = await fetch(challenge.url);
         const result = await response.json();
   
