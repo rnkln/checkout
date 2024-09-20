@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/router';
 import { Spinner } from '@matter/loading';
 import { View } from '@lib/view/View';
@@ -17,6 +18,7 @@ import { PayViewMethods, PayViewMethodsResult } from './PayViewMethods';
 
 export const PayView = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const {
     decimal,
     currency = 'DKK',
@@ -96,7 +98,7 @@ export const PayView = () => {
   };
 
   if (isError) {
-    return <div>Something went wrong...</div>;
+    return <div>{t('error-unknown')}</div>;
   }
 
   if (isLoading) {

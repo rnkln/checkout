@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
 import { Spinner } from '@matter/loading';
 import { View } from '@lib/view/View';
 import { ViewContent } from '@lib/view/ViewContent';
@@ -22,8 +22,8 @@ import { RedirectChallenge } from './RedirectChallenge';
 import { IFrameChallenge } from './IFrameChallenge';
 
 export const ChallengeView = () => {
-  const router = useRouter();
   const { id, redirect, strategy = 'auto' } = useChallengeParams();
+  const { t } = useTranslation();
 
   const {
     data: config,
@@ -44,7 +44,7 @@ export const ChallengeView = () => {
   };
 
   if (isConfigError || isPaymentError) {
-    return <div>Something went wrong...</div>;
+    return <div>{t('error-unknown')}</div>;
   }
 
   if (isConfigLoading || isPaymentLoading) {
