@@ -29,6 +29,8 @@
   "method-apple-pay": "ApplePay",
   "method-card": "Kort",
   "method-mobile-pay": "MobilePay",
+  "pay-amount": "Belopp",
+  "pay-amount-next": "Gå till betalning",
   "pay-success": "Betalningen lyckades",
   "pay-success-redirect": "Omdirigerar dig tillbaka",
   "secure-payments": "Säkra betalningar"

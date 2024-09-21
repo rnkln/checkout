@@ -1,4 +1,5 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Flex } from '@matter/flex';
 import { Button } from '@matter/button';
 import { Textfield } from '@matter/textfield';
@@ -14,9 +15,16 @@ export const PayViewAmount = ({
   initialAmount,
   onComplete,
 }: PayViewAmountProps) => {
+  const { t } = useTranslation()
   const ref = useRef<HTMLInputElement>(null);
   const [decimal, setDecimal] = useState(initialAmount?.decimal ?? '');
   const [currency] = useState(initialAmount?.currency ?? '');
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if(event.key === 'Enter' && decimal !== '' && currency !== '') {
+      onComplete({ decimal, currency })
+    }
+  }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
@@ -37,16 +45,17 @@ export const PayViewAmount = ({
         ref={ref}
         value={decimal}
         name="amount"
-        label="Amount"
+        label={t('pay-amount')}
         autoFocus
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
       />
       <Button
         data-test-id="pay-view-amount-submit"
         disabled={decimal === '' || currency === ''}
         onClick={() => onComplete({ decimal, currency })}
       >
-        Next
+        {t('pay-amount-next')}
       </Button>
     </Flex>
   );

@@ -29,6 +29,8 @@
   "method-apple-pay": "ApplePay",
   "method-card": "Card",
   "method-mobile-pay": "MobilePay",
+  "pay-amount": "Amount",
+  "pay-amount-next": "Go to payment",
   "pay-success": "Payment Successful",
   "pay-success-redirect": "Redirecting you back",
   "secure-payments": "Secure payments"
