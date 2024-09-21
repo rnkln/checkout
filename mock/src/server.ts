@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.set('etag', false);
 
 createVaultService(app, '/api/vault');
-createPaymentService(app, '/v1/payments');
+createPaymentService(app, '/api/payments');
 createChallengeService(app, '/api/challenge');
 
 const server = app.listen(port, () => {

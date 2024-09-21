@@ -6,7 +6,7 @@ export const usePaymentEndpoint = (...paths: Array<string | undefined>) => {
 
   return useMemo(
     () =>
-      [PAYMENTS_API_ENDPOINT, 'v1', 'payments', ...paths]
+      [PAYMENTS_API_ENDPOINT, ...paths]
         .filter((part): part is string => Boolean(part))
         .map((part) => part.replace(/^\//, ''))
         .join('/'),

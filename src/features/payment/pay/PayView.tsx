@@ -20,8 +20,8 @@ export const PayView = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const {
-    decimal,
-    currency = 'DKK',
+    decimal: decimalParam = '',
+    currency: currencyParam,
     method,
     redirect,
     strategy,
@@ -31,21 +31,20 @@ export const PayView = () => {
   const { mutateAsync: vault, isLoading: isVaulting } = useVault();
   const { mutateAsync: create, isLoading: isCreating } = usePaymentPost();
 
-  const [amount, setAmount] = useState<Amount>(() => ({
-    decimal: decimal ?? '',
-    currency: currency ?? '',
-  }));
+  const [decimal, setDecimal] = useState(decimalParam)
+  const currency = config?.currency ?? currencyParam ?? 'DKK'
+  const amount: Amount = { decimal, currency }
 
   const isBusy = isVaulting || isCreating;
-  const hasAmount = amount.decimal !== '' && amount.currency !== '';
+  const isValid = decimal !== ''
 
-  const handleAmount = (result: Amount) => {
-    setAmount(result);
+  const handleAmount = (result: string) => {
+    setDecimal(result);
 
     router.push(
       `/?${toUrlParams({
-        decimal: result.decimal,
-        currency: result.currency,
+        decimal: result,
+        currency: currencyParam,
         method,
         redirect,
         strategy,
@@ -63,7 +62,10 @@ export const PayView = () => {
       ]);
 
       const { paymentId } = await create({
-        amount,
+        amount: {
+          decimal,
+          currency
+        },
         card: {
           code: code.token,
           number: number.token,
@@ -83,7 +85,10 @@ export const PayView = () => {
       );
     } else {
       const { paymentId } = await create({
-        amount,
+        amount: {
+          decimal,
+          currency
+        },
         [result.method as 'mobilePay']: true,
       });
 
@@ -109,15 +114,15 @@ export const PayView = () => {
     <View data-test-id="pay-view">
       <ViewHeader
         busy={isBusy}
-        amount={hasAmount ? amount : undefined}
+        amount={isValid ? amount : undefined}
         merchant={config.merchant}
       />
 
       <ViewContent>
-        {!hasAmount && (
-          <PayViewAmount initialAmount={amount} onComplete={handleAmount} />
+        {!isValid && (
+          <PayViewAmount initial={decimal} onComplete={handleAmount} />
         )}
-        {hasAmount && (
+        {isValid && (
           <PayViewMethods
             busy={isBusy}
             amount={amount}

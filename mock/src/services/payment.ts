@@ -18,6 +18,7 @@ export const payments = new Store<Payment>();
 export const createPaymentService = (app: Express, endpoint: string) => {
   app.get(`${endpoint}/config`, (req, res: Response<PaymentConfigResponse>) => res.json({
     methods: ['card', 'mobilePay', 'applePay'],
+    currency: 'DKK',
     merchant: {
       key: crypto.randomUUID(),
       logo: 'https://fakeimg.pl/200x200/231070/ffffff?text=Logo&font=bebas',
@@ -52,7 +53,7 @@ export const createPaymentService = (app: Express, endpoint: string) => {
         createFetch(),
         createIFrame('iframe'),
         createIFrame('background-iframe'),
-        createRedirect('http://localhost:3000'),
+        createRedirect(),
       ],
       ...payment,
     });
@@ -151,7 +152,7 @@ const createIFrame = (type: 'iframe' | 'background-iframe'): Challenge => {
   };
 };
 
-const createRedirect = (url: string): Challenge => ({
+const createRedirect = (): Challenge => ({
   type: 'redirect',
-  url: `http://localhost:3001/api/challenge/redirect?returnUrl=${url}`,
+  url: `http://localhost:3001/api/challenge/redirect`,
 });

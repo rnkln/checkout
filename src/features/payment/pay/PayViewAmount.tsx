@@ -4,25 +4,22 @@ import { Flex } from '@matter/flex';
 import { Button } from '@matter/button';
 import { Textfield } from '@matter/textfield';
 
-import { Amount } from '../client/payment_types';
-
 export type PayViewAmountProps = {
-  initialAmount?: Amount;
-  onComplete: (amount: Amount) => void;
+  initial?: string;
+  onComplete: (amount: string) => void;
 };
 
 export const PayViewAmount = ({
-  initialAmount,
+  initial = '',
   onComplete,
 }: PayViewAmountProps) => {
   const { t } = useTranslation()
   const ref = useRef<HTMLInputElement>(null);
-  const [decimal, setDecimal] = useState(initialAmount?.decimal ?? '');
-  const [currency] = useState(initialAmount?.currency ?? '');
+  const [decimal, setDecimal] = useState(initial);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if(event.key === 'Enter' && decimal !== '' && currency !== '') {
-      onComplete({ decimal, currency })
+    if(event.key === 'Enter' && decimal !== '') {
+      onComplete(decimal)
     }
   }
 
@@ -52,8 +49,8 @@ export const PayViewAmount = ({
       />
       <Button
         data-test-id="pay-view-amount-submit"
-        disabled={decimal === '' || currency === ''}
-        onClick={() => onComplete({ decimal, currency })}
+        disabled={decimal === ''}
+        onClick={() => onComplete(decimal)}
       >
         {t('pay-amount-next')}
       </Button>

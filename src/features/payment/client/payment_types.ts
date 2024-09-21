@@ -13,6 +13,7 @@ export type Merchant = {
 
 export type Config = {
   merchant: Merchant;
+  currency: string;
   methods: Array<Method>;
 };
 

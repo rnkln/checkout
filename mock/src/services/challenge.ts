@@ -1,4 +1,5 @@
 import { Express } from 'express';
+import { payments } from './payment.js';
 
 export const root = '/mock/public/';
 
@@ -14,6 +15,20 @@ export const createChallengeService = (app: Express, endpoint: string) => {
   });
 
   app.all(`${endpoint}/redirect`, async (req, res) => {
+     // @ts-expect-error returnUrl not defined as param
+    const returnUrl = new URL(req.query.returnUrl)
+    const returnUrlParams = new URLSearchParams(returnUrl.search);
+    const paymentId = returnUrlParams.get('id')
+
+    payments.update(
+      (p) => p.id === paymentId,
+      (p) => ({
+        ...p,
+        status: 'completed',
+        challenges: [],
+      })
+    );
+
     return res.sendFile('redirect.html', { root });
   });
 

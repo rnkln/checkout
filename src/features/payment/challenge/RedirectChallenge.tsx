@@ -8,7 +8,13 @@ export type RedirectChallengeProps = {
 
 export const RedirectChallenge = ({ challenge }: RedirectChallengeProps) => {
   useEffect(() => {
-    window.location.assign(challenge.url)
+    const url = new URL(challenge.url);
+    const params = new URLSearchParams(url.search);
+
+    params.append('returnUrl', window.location.href);
+    url.search = params.toString();
+
+    window.location.assign(url.toString())
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [])
 
