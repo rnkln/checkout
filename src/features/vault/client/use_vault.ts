@@ -3,17 +3,17 @@ import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { useEnvironment } from '@setup/use_environment';
 import { usePaymentFetch } from '@features/payment/client/use_payment_fetch';
 
-export type VaultInput = Array<{
+export type VaultInput = {
   type: 'pcn' | 'pcsc';
   value: string;
-}>;
+};
 
-export type VaultResponse = Array<{
+export type VaultResponse = {
   token: string;
-}>;
+};
 
 export type UseVaultOptions = Omit<
-  UseMutationOptions<VaultResponse, {}, VaultInput>,
+  UseMutationOptions<Array<VaultResponse>, {}, Array<VaultInput>>,
   'mutationKey' | 'mutationFn'
 >;
 
@@ -21,7 +21,7 @@ export const useVault = (options?: UseVaultOptions) => {
   const VAULT_API_ENDPOINT = useEnvironment('VAULT_API_ENDPOINT');
   const fetch = usePaymentFetch();
   const mutation = useCallback(
-    async (input: VaultInput) => {
+    async (input: Array<VaultInput>) => {
       const creates = Array.isArray(input) ? input : [input];
       const createsPromises = creates.map((body) =>
         fetch(VAULT_API_ENDPOINT, {
@@ -36,7 +36,7 @@ export const useVault = (options?: UseVaultOptions) => {
       );
 
       const responses = await Promise.all(createsPromises);
-      const results: VaultResponse = await Promise.all(
+      const results: Array<VaultResponse> = await Promise.all(
         responses.map((response) => response.json())
       );
 

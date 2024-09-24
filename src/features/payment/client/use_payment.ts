@@ -6,29 +6,34 @@ import {
   usePaymentMutation,
   UsePaymentMutationOptions,
 } from './use_payment_mutation';
+import { PaymentErrorCode } from './payment_error';
+
+export type PaymentErrorResponse = {
+  code: PaymentErrorCode;
+  message: string;
+};
 
 export type PaymentResponse = Payment;
 
-export type PaymentPostInput =
-  | Pick<Payment, 'amount' | 'text'> &
-      (
-        | {
-            card: {
-              number: string;
-              code: string;
-              expiry: {
-                month: number;
-                year: number;
-              };
-            };
-          }
-        | {
-            applePay: true;
-          }
-        | {
-            mobilePay: true;
-          }
-      );
+export type PaymentPostInput = Pick<Payment, 'amount' | 'text'> &
+  (
+    | {
+        card: {
+          number: string;
+          code: string;
+          expiry: {
+            month: number;
+            year: number;
+          };
+        };
+      }
+    | {
+        applePay: true;
+      }
+    | {
+        mobilePay: true;
+      }
+  );
 
 export type PaymentPostResponse = {
   paymentId: string;

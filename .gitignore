@@ -20,14 +20,13 @@
 # Include these files
 !.browserslistrc
 !.editorconfig
-!.env.development
+!.env
 !.gitignore
 !.tool-versions
+!bun.lockb
 !cypress.config.ts
-!docker-compose.yml
-!Dockerfile.mock
+!instrumentation.ts
 !next.config.js
 !package.json
-!pnpm-lock.yaml
 !README.md
 !tsconfig.json

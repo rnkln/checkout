@@ -29,6 +29,13 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "pages/", "src/", ".next/types/**/*.ts"],
+  "include": [
+    ".next/types/**/*.ts",
+    "next-env.d.ts",
+    "instrumentation.ts",
+    "src/",
+    "mock/",
+    "pages/"
+  ],
   "exclude": ["node_modules"]
 }

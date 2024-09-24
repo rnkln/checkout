@@ -70,9 +70,7 @@ export type Hint = string;
 export type Payment = {
   id: string;
   text?: string;
-  hints: Array<Hint>;
   amount: Amount;
-  method: Method;
   challenges?: Array<Challenge>;
 } & (
   | { status: 'pending' | 'completed' }

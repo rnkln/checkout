@@ -6,6 +6,7 @@ const __filename = u.fileURLToPath(import.meta.url);
 const __dirname = p.dirname(__filename);
 
 const env = {
+  NEXT_TELEMETRY_DISABLED: 1,
   NEXT_PUBLIC_PAYMENTS_API_ENDPOINT: 'http://localhost:3001',
   NEXT_PUBLIC_VAULT_API_ENDPOINT: 'http://localhost:3001/api/vault',
 };

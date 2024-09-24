@@ -8,6 +8,9 @@ export default withVanillaExtract({
   generateEtags: false,
   reactStrictMode: true,
   poweredByHeader: false,
+  experimental: {
+    instrumentationHook: true,
+  },
   images: {
     disableStaticImages: true,
   },

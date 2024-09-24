@@ -25,6 +25,7 @@ jobs:
         run: pnpm install
         env:
           CYPRESS_INSTALL_BINARY: 0
+          LUNAR_GITHUB_REGISTRY_TOKEN: ${{ secrets.LUNAR_GITHUB_REGISTRY_TOKEN }}
 
       - name: Setup environment
         run: pnpm run init
@@ -50,7 +51,7 @@ jobs:
         uses: asdf-vm/actions/install@v3
 
       - name: Run TypeScript
-        run: pnpm run type
+        run: pnpm run check
 
   linting:
     name: Linting
@@ -84,7 +85,7 @@ jobs:
         uses: asdf-vm/actions/install@v3
 
       - name: Run Prettier
-        run: pnpm run prettier
+        run: pnpm run format
 
   localization:
     name: Localization

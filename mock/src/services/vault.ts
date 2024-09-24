@@ -1,10 +1,14 @@
-import { Express } from 'express';
+import { http, HttpResponse } from 'msw';
+import { VaultInput, VaultResponse } from '@features/vault/client/use_vault';
 
-export const createVaultService = (app: Express, endpoint: string) => {
-  app.post(endpoint, async (req, res) => {
-    const input = req.body;
-    const token = Buffer.from(input.value).toString('base64');
+export const createVaultService = (endpoint: string) => [
+  http.post<{}, VaultInput, VaultResponse, typeof endpoint>(
+    endpoint,
+    async ({ request }) => {
+      const input = await request.json();
+      const token = Buffer.from(input.value).toString('base64');
 
-    return res.json({ token });
-  });
-};
+      return HttpResponse.json({ token });
+    }
+  ),
+];

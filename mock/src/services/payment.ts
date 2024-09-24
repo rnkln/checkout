@@ -1,53 +1,80 @@
 import crypto from 'crypto';
 
-import { Express, Request, Response } from 'express';
-
-import { Payment, Challenge } from '@features/payment/client/payment_types.js';
-import { PaymentErrorCode } from '@features/payment/client/payment_error.js';
+import { http, HttpResponse } from 'msw';
+import { Payment, Challenge } from '@features/payment/client/payment_types';
+import { PaymentErrorCode } from '@features/payment/client/payment_error';
 import {
   PaymentResponse,
   PaymentPostResponse,
   PaymentPatchResponse,
   PaymentConfigResponse,
-} from '@features/payment/client/use_payment.js';
+  PaymentErrorResponse,
+  PaymentPostInput,
+  PaymentPatchInput,
+} from '@features/payment/client/use_payment';
 
-import { Store } from '../helpers/store.js';
+import { Store } from '../helpers/store';
 
 export const payments = new Store<Payment>();
 
-export const createPaymentService = (app: Express, endpoint: string) => {
-  app.get(`${endpoint}/config`, (req, res: Response<PaymentConfigResponse>) => res.json({
-    methods: ['card', 'mobilePay', 'applePay'],
-    currency: 'DKK',
-    merchant: {
-      key: crypto.randomUUID(),
-      logo: 'https://fakeimg.pl/200x200/231070/ffffff?text=Logo&font=bebas',
-      name: 'Fake A/S',
+export const createPaymentService = (endpoint: string) => [
+  http.get<{}, {}, PaymentConfigResponse, `${typeof endpoint}/config`>(
+    `${endpoint}/config`,
+    async () =>
+      HttpResponse.json({
+        methods: ['card', 'mobilePay', 'applePay'],
+        currency: 'DKK',
+        merchant: {
+          key: crypto.randomUUID(),
+          logo: 'https://fakeimg.pl/200x200/231070/ffffff?text=Logo&font=bebas',
+          name: 'Fake A/S',
+        },
+      })
+  ),
+
+  http.get<
+    { id: string },
+    {},
+    PaymentResponse | PaymentErrorResponse,
+    `${typeof endpoint}/:id`
+  >(`${endpoint}/:id`, async ({ request, params }) => {
+    const error = request.headers.get(
+      'x-mock-error-code'
+    ) as null | PaymentErrorCode;
+    const payment = payments.find((p) => p.id === params.id);
+
+    if (!payment) {
+      // eslint-disable-next-line @typescript-eslint/no-throw-literal
+      throw new HttpResponse(null, { status: 404 });
     }
-  }));
 
-  app.get(`${endpoint}/:id`, (req, res: Response<PaymentResponse>) => {
-    const error = extractPaymentError(req);
-    const payment = payments.find((p) => p.id === req.params.id);
-
-    if (!payment || error) {
-      return sendError(res, 500, error);
+    if (error !== null) {
+      return HttpResponse.json(
+        {
+          code: error,
+          message: 'Error debugging message',
+        },
+        { status: 500 }
+      );
     }
 
-    return res.json(payment);
-  });
+    return HttpResponse.json(payment);
+  }),
 
-  app.post(endpoint, async (req, res: Response<PaymentPostResponse>) => {
-    const payment = req.body;
-    const paymentId = crypto.randomUUID();
+  http.post<
+    {},
+    PaymentPostInput,
+    PaymentPostResponse | PaymentErrorResponse,
+    typeof endpoint
+  >(endpoint, async ({ request }) => {
+    const payment = await request.json();
+    const paymentId = crypto.randomUUID() as string;
 
     payments.insert({
       id: paymentId,
       status: 'pending',
-      amount: {
-        decimal: '10.57',
-        currency: 'DKK',
-      },
+      text: payment.text,
+      amount: payment.amount,
       challenges: [
         createPoll(),
         createFetch(),
@@ -55,75 +82,78 @@ export const createPaymentService = (app: Express, endpoint: string) => {
         createIFrame('background-iframe'),
         createRedirect(),
       ],
-      ...payment,
     });
 
-    return res.json({
+    return HttpResponse.json({
       paymentId,
     });
-  });
+  }),
 
-  app.patch(
-    `${endpoint}/:id`,
-    async (req, res: Response<PaymentPatchResponse>) => {
-      const error = extractPaymentError(req);
-      const payment = payments.find((p) => p.id === req.params.id);
+  http.patch<
+    { id: string },
+    PaymentPatchInput,
+    PaymentPatchResponse | PaymentErrorResponse,
+    `${typeof endpoint}/:id`
+  >(`${endpoint}/:id`, async ({ request, params }) => {
+    const error = request.headers.get(
+      'x-mock-error-code'
+    ) as null | PaymentErrorCode;
+    const hints = await request.json();
+    const payment = payments.find((p) => p.id === params.id);
 
-      if (!payment) {
-        return sendError(res);
-      }
+    if (!payment) {
+      // eslint-disable-next-line @typescript-eslint/no-throw-literal
+      throw new HttpResponse(null, { status: 404 });
+    }
 
-      if (error) {
-        payments.update(
-          (p) => p.id === payment.id,
-          (p) => ({
-            ...p,
-            error,
-            status: 'failed',
-            challenges: [],
-          })
-        );
+    if (!hints) {
+      // eslint-disable-next-line @typescript-eslint/no-throw-literal
+      throw new HttpResponse(null, { status: 500 });
+    }
 
-        return res.json({});
-      }
-
+    if (error !== null) {
       payments.update(
         (p) => p.id === payment.id,
         (p) => ({
           ...p,
-          status: 'completed',
+          error,
+          status: 'failed',
           challenges: [],
         })
       );
 
-      return res.json({});
+      return HttpResponse.json(
+        {
+          code: error,
+          message: 'Error debugging message',
+        },
+        { status: 500 }
+      );
     }
-  );
-};
 
-const extractPaymentError = (req: Request) =>
-  req.headers['x-mock-error-code'] as PaymentErrorCode;
+    payments.update(
+      (p) => p.id === payment.id,
+      (p) => ({
+        ...p,
+        status: 'completed',
+        challenges: [],
+      })
+    );
 
-const sendError = (
-  res: Response,
-  status: number = 404,
-  code?: PaymentErrorCode
-) =>
-  res.status(status).json({
-    code: code ?? 'entity.not.found',
-    message: 'payment error debugging message',
-  });
+    return HttpResponse.json({});
+  }),
+];
 
 const createPoll = (): Challenge => {
-  const notBefore = new Date()
-  notBefore.setSeconds(notBefore.getSeconds() + 5)
-  
+  const notBefore = new Date();
+  notBefore.setSeconds(notBefore.getSeconds() + 5);
+
   return {
     type: 'poll',
     notBefore: notBefore.toISOString(),
     interval: 1000,
-    url: `http://localhost:3001/api/challenge/poll`
-  }
+    url: `http://localhost:3001/api/challenge/poll`,
+  };
 };
 
 const createFetch = (): Challenge => ({
