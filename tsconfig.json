@@ -33,9 +33,9 @@
     ".next/types/**/*.ts",
     "next-env.d.ts",
     "instrumentation.ts",
-    "src/",
-    "mock/",
-    "pages/"
+    "src/**/*.ts", "src/**/*.tsx",
+    "mock/**/*.ts",
+    "pages/**/*.ts", "pages/**/*.tsx"
   ],
   "exclude": ["node_modules"]
 }

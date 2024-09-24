@@ -14,8 +14,6 @@
 !public/**/*
 !scripts
 !scripts/**/*
-!cypress
-!cypress/**/*
 
 # Include these files
 !.browserslistrc
@@ -24,7 +22,6 @@
 !.gitignore
 !.tool-versions
 !bun.lockb
-!cypress.config.ts
 !instrumentation.ts
 !next.config.js
 !package.json
