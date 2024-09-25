@@ -23,7 +23,6 @@ export const Portal = ({
 		return null
 	}
 
-	// @ts-expect-error apparent child is not a ReactNode?
 	return disabled ? child : createPortal(child, parent)
 }
 
