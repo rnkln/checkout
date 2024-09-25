@@ -14,20 +14,18 @@
 !public/**/*
 !scripts
 !scripts/**/*
-!cypress
-!cypress/**/*
 
 # Include these files
 !.browserslistrc
 !.editorconfig
-!.env.development
+!.env
 !.gitignore
 !.tool-versions
-!cypress.config.ts
-!docker-compose.yml
-!Dockerfile.mock
+!bun.lockb
+!eslint.config.js
+!instrumentation.ts
 !next.config.js
 !package.json
-!pnpm-lock.yaml
+!prettier.config.js
 !README.md
 !tsconfig.json

@@ -1,34 +1,23 @@
-import cors from 'cors';
-import express from 'express';
+import { createServer } from '@mswjs/http-middleware'
+import chalk from 'chalk'
 
-import delay from './helpers/delay.js';
-import { createVaultService } from './services/vault.js';
-import { createPaymentService } from './services/payment.js';
-import { createChallengeService } from './services/challenge.js';
+import { createDelay } from './helpers/delay'
+import { createVaultService } from './services/vault'
+import { createPaymentService } from './services/payment'
+import { createChallengeService } from './services/challenge'
 
-const app = express();
-const port = 3001;
-const hostname = `http://localhost:${port}`;
+const port = 3001
+const hostname = `http://localhost:${port}`
+const server = createServer(
+	...[
+		...createDelay('real'),
+		...createVaultService('/api/vault'),
+		...createPaymentService('/api/payments'),
+		...createChallengeService('/api/challenge')
+	]
+)
 
-app.use(cors());
-app.use(delay(20));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.set('etag', false);
-
-createVaultService(app, '/api/vault');
-createPaymentService(app, '/api/payments');
-createChallengeService(app, '/api/challenge');
-
-const server = app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at ${hostname}`);
-});
-
-['SIGHUP', 'SIGINT', 'SIGTERM'].forEach((signal) => {
-  process.on(signal, () => {
-    server.close(() => {
-      console.log(`⚡️[server]: Server stopped by ${signal}`);
-      process.exit();
-    });
-  });
-});
+server.listen(port, () => {
+	// eslint-disable-next-line no-console
+	console.log(` ${chalk.green('✓')} Server mock is running at ${hostname}`)
+})

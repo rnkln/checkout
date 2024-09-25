@@ -1,83 +1,81 @@
-import { PaymentErrorCode } from './payment_error';
+import type { PaymentErrorCode } from './payment_error'
 
 export type Amount = {
-  currency: string;
-  decimal: string;
-};
+	currency: string
+	decimal: string
+}
 
 export type Merchant = {
-  key: string;
-  name?: string;
-  logo?: string;
-};
+	key: string
+	name?: string
+	logo?: string
+}
 
 export type Config = {
-  merchant: Merchant;
-  currency: string;
-  methods: Array<Method>;
-};
+	merchant: Merchant
+	currency: string
+	methods: Method[]
+}
 
 export type PollChallenge = {
-  type: 'poll';
-  notBefore: string;
-  interval: number;
-  url: string;
-};
+	type: 'poll'
+	notBefore: string
+	interval: number
+	url: string
+}
 
 export type FetchChallenge = {
-  type: 'fetch';
-  url: string;
-};
+	type: 'fetch'
+	url: string
+}
 
 export type IFrameChallenge = {
-  type: 'iframe' | 'background-iframe';
-  method: 'GET' | 'POST';
-  url?: string;
-  action?: string;
-  fields?: object;
-  timeout?: number;
-  width?: number;
-  height?: number;
-};
+	type: 'iframe' | 'background-iframe'
+	method: 'GET' | 'POST'
+	url?: string
+	action?: string
+	fields?: Record<string, string>
+	timeout?: number
+	width?: number
+	height?: number
+}
 
 export type RedirectChallenge = {
-  type: 'redirect';
-  url: string;
-};
+	type: 'redirect'
+	url: string
+}
 
 export type Challenge =
-  | PollChallenge
-  | FetchChallenge
-  | IFrameChallenge
-  | RedirectChallenge;
+	| PollChallenge
+	| FetchChallenge
+	| IFrameChallenge
+	| RedirectChallenge
 
 export const challengeTypes = [
-  'poll',
-  'fetch',
-  'iframe',
-  'redirect',
-  'background-iframe',
-] as const;
+	'poll',
+	'fetch',
+	'iframe',
+	'redirect',
+	'background-iframe'
+] as const
 
-export type ChallengeType = (typeof challengeTypes)[number];
+export type ChallengeType = (typeof challengeTypes)[number]
 
-export const methodsTypes = ['card', 'mobilePay', 'applePay'] as const;
+export const methodsTypes = ['card', 'mobilePay', 'applePay'] as const
 
-export type Method = (typeof methodsTypes)[number];
+export type Method = (typeof methodsTypes)[number]
 
-export type Hint = string;
+export type Hint = string
 
 export type Payment = {
-  id: string;
-  text?: string;
-  hints: Array<Hint>;
-  amount: Amount;
-  method: Method;
-  challenges?: Array<Challenge>;
+	id: string
+	text?: string
+	amount: Amount
+	challenges?: Challenge[]
 } & (
-  | { status: 'pending' | 'completed' }
-  | {
-      status: 'failed';
-      error: PaymentErrorCode;
-    }
-);
+	| { status: 'pending' | 'completed' }
+	| {
+			status: 'failed'
+			error: PaymentErrorCode
+	  }
+)

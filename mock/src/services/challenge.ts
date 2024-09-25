@@ -1,48 +1,66 @@
-import { Express } from 'express';
-import { payments } from './payment.js';
+import { readFileSync } from 'fs'
+import { fileURLToPath } from 'url'
+import { join, dirname } from 'path'
 
-export const root = '/mock/public/';
+import { http, HttpResponse } from 'msw'
+
+import { payments } from './payment'
+
+const directory = dirname(fileURLToPath(import.meta.url))
 
 let pollCounter = 0
 
-export const createChallengeService = (app: Express, endpoint: string) => {
-  app.all(`${endpoint}/background-iframe`, async (req, res) => {
-    return res.sendFile('challenge-background-iframe.html', { root });
-  });
+const getChallengeHTML = (type: string) => {
+	const path = join(directory, '..', '..', 'public', `${type}.html`)
+	const content = readFileSync(path, 'utf8')
 
-  app.all(`${endpoint}/iframe`, async (req, res) => {
-    return res.sendFile('iframe.html', { root });
-  });
+	return content
+}
 
-  app.all(`${endpoint}/redirect`, async (req, res) => {
-     // @ts-expect-error returnUrl not defined as param
-    const returnUrl = new URL(req.query.returnUrl)
-    const returnUrlParams = new URLSearchParams(returnUrl.search);
-    const paymentId = returnUrlParams.get('id')
+export const createChallengeService = (endpoint: string) => [
+	http.all(`${endpoint}/background-iframe`, async () =>
+		HttpResponse.html(getChallengeHTML('background-iframe'))
+	),
 
-    payments.update(
-      (p) => p.id === paymentId,
-      (p) => ({
-        ...p,
-        status: 'completed',
-        challenges: [],
-      })
-    );
+	http.all(`${endpoint}/iframe`, async () =>
+		HttpResponse.html(getChallengeHTML('iframe'))
+	),
 
-    return res.sendFile('redirect.html', { root });
-  });
+	http.all<{ returnUrl: string }>(
+		`${endpoint}/redirect`,
+		async ({ params }) => {
+			const returnUrl = new URL(params.returnUrl)
+			const returnUrlParams = new URLSearchParams(returnUrl.search)
+			const paymentId = returnUrlParams.get('id')
 
-  app.all(`${endpoint}/fetch`, async (req, res) => {
-    return res.json({ hints: ['hint-from-fetch'] });
-  });
+			payments.update(
+				(p) => p.id === paymentId,
+				(p) => ({
+					...p,
+					status: 'completed',
+					challenges: []
+				})
+			)
 
-  app.all(`${endpoint}/poll`, async (req, res) => {
-    if(pollCounter === 3) {
-      pollCounter = 0;
-      return res.json({ hints: ['hint-from-poll'] });
-    }
+			return HttpResponse.html(getChallengeHTML('redirect'))
+		}
+	),
 
-    pollCounter++;
-    return res.json({});
-  });
-};
+	http.all<never, never, { hints?: string[] }>(
+		`${endpoint}/fetch`,
+		async () => HttpResponse.json({ hints: ['hint-from-fetch'] })
+	),
+
+	http.all<never, never, { hints?: string[] }>(
+		`${endpoint}/poll`,
+		async () => {
+			if (pollCounter === 3) {
+				pollCounter = 0
+				return HttpResponse.json({ hints: ['hint-from-fetch'] })
+			}
+
+			pollCounter += 1
+			return HttpResponse.json({})
+		}
+	)
+]

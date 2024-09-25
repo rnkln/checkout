@@ -1,148 +1,38 @@
 name: Code
 
 on:
-  pull_request:
-    branches:
-      - master
+    pull_request:
+        branches:
+            - master
 
 env:
-  CACHE_KEY: pnpm-${{ github.run_id }}
+    BUN_ENV: production
+    FORCE_COLOR: 1
+
+permissions:
+    contents: read
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-  install:
-    name: Install
-    runs-on: ubuntu-latest
-    outputs:
-      cache-key: ${{ steps.cache.outputs.cache-key }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    job:
+        name: ${{ matrix.script }}
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                script: [lint, check, format]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
-      - name: Install tools
-        uses: asdf-vm/actions/install@v3
+            - name: Tools
+              uses: asdf-vm/actions/install@05e0d2ed97b598bfce82fd30daf324ae0c4570e6 # v3.0.2
 
-      - name: Install dependencies
-        run: pnpm install
-        env:
-          CYPRESS_INSTALL_BINARY: 0
+            - name: Install
+              run: bun install
 
-      - name: Setup environment
-        run: pnpm run init
-
-      - name: Setup Cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ env.CACHE_KEY }}
-          path: .
-
-  typing:
-    name: Typing
-    needs: install
-    runs-on: ubuntu-latest
-    steps:
-      - name: Read Cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ env.CACHE_KEY }}
-          path: .
-
-      - name: Install tools
-        uses: asdf-vm/actions/install@v3
-
-      - name: Run TypeScript
-        run: pnpm run type
-
-  linting:
-    name: Linting
-    needs: install
-    runs-on: ubuntu-latest
-    steps:
-      - name: Read Cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ env.CACHE_KEY }}
-          path: .
-
-      - name: Install tools
-        uses: asdf-vm/actions/install@v3
-
-      - name: Run Linter
-        run: pnpm run lint
-
-  prettier:
-    name: Prettier
-    needs: install
-    runs-on: ubuntu-latest
-    steps:
-      - name: Read Cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ env.CACHE_KEY }}
-          path: .
-
-      - name: Install tools
-        uses: asdf-vm/actions/install@v3
-
-      - name: Run Prettier
-        run: pnpm run prettier
-
-  localization:
-    name: Localization
-    needs: install
-    runs-on: ubuntu-latest
-    steps:
-      - name: Read Cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ env.CACHE_KEY }}
-          path: .
-
-      - name: Install tools
-        uses: asdf-vm/actions/install@v3
-
-      - name: Run Localization
-        run: pnpm run i18n check
-
-  test:
-    name: Test
-    needs: install
-    runs-on: ubuntu-latest
-    steps:
-      - name: Read Cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ env.CACHE_KEY }}
-          path: .
-
-      - name: Install tools
-        uses: asdf-vm/actions/install@v3
-
-      - name: Cypress Install
-        run: pnpm exec cypress install
-
-      - name: Cypress Test
-        uses: cypress-io/github-action@v4.2.0
-        with:
-          install: true
-          browser: chrome
-          config: 'viewportWidth=375,viewportHeight=667'
-          config-file: cypress.config.ts
-          start: pnpm run dev
-          wait-on: 'http://localhost:3000/'
-
-  build:
-    name: Build
-    needs: [typing, linting, prettier, localization, test]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Read Cache
-        uses: actions/cache@v3
-        with:
-          key: ${{ env.CACHE_KEY }}
-          path: .
-
-      - name: Install tools
-        uses: asdf-vm/actions/install@v3
-
-      - name: Run Build
-        run: pnpm run build
+            - name: Run ${{ matrix.script }}
+              run: bun run ${{ matrix.script }}

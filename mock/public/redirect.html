@@ -1,23 +1,25 @@
 <!doctype html>
 <html>
-  <body>
-    <button id="button" style="display: none">Continue</button>
-    <div id="paragraph" style="display: none">
-      Could not find returnUrl, you will have to manually return to the payment
-      page to continue
-    </div>
+	<body>
+		<button id="button" style="display: none">Continue</button>
+		<div id="paragraph" style="display: none">
+			Could not find returnUrl, you will have to manually return to the
+			payment page to continue
+		</div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const params = new URLSearchParams(window.location.search);
-        const returnUrl = params.get('returnUrl');
-        const elementToShow = returnUrl ? 'button' : 'paragraph';
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				const params = new URLSearchParams(window.location.search)
+				const returnUrl = params.get('returnUrl')
+				const elementToShow = returnUrl ? 'button' : 'paragraph'
 
-        document.getElementById(elementToShow).removeAttribute('style');
-        document.getElementById('button').addEventListener('click', () => {
-          location.assign(returnUrl);
-        });
-      });
-    </script>
-  </body>
+				document.getElementById(elementToShow).removeAttribute('style')
+				document
+					.getElementById('button')
+					.addEventListener('click', () => {
+						location.assign(returnUrl)
+					})
+			})
+		</script>
+	</body>
 </html>

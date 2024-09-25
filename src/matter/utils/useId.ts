@@ -1,7 +1,7 @@
-import { useId as useIdBase } from 'react';
+import { useId as useIdBase } from 'react'
 
 export const useId = (override?: string): string => {
-  const id = useIdBase();
+	const id = useIdBase()
 
-  return override ?? id;
-};
+	return override ?? id
+}

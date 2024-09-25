@@ -1,18 +1,18 @@
-import { Text, TextProps } from '@matter/typography';
+import { Text, type TextProps } from '@matter/typography'
 
 import {
-  useAmountFormatted,
-  Amount as AmountType,
-  AmountFormatterOptions,
-} from './use_amount_formatted';
+	useAmountFormatted,
+	type Amount as AmountType,
+	type AmountFormatterOptions
+} from './use_amount_formatted'
 
 export type AmountProps = TextProps &
-  AmountFormatterOptions & {
-    amount: AmountType;
-  };
+	AmountFormatterOptions & {
+		amount: AmountType
+	}
 
 export const Amount = ({ amount, locale, ...otherProps }: AmountProps) => {
-  const formatted = useAmountFormatted({ locale, amount });
+	const formatted = useAmountFormatted({ locale, amount })
 
-  return <Text {...otherProps}>{formatted}</Text>;
-};
+	return <Text {...otherProps}>{formatted}</Text>
+}

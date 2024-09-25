@@ -1,4 +1,4 @@
-import ts from 'typescript';
+import ts from 'typescript'
 
 /**
  * Finds all nodes in the TypeScript program.
@@ -7,12 +7,12 @@ import ts from 'typescript';
  * @returns {ts.Node[]} An array of nodes matching the specified kind.
  */
 export const findNodesByPredicate = (node, predicate) => {
-  const result = [];
+	const result = []
 
-  traverseNode(node, predicate, result);
+	traverseNode(node, predicate, result)
 
-  return result;
-};
+	return result
+}
 
 /**
  * Recursively traverses the AST starting from the given node and collects nodes of the specified kind.
@@ -22,11 +22,11 @@ export const findNodesByPredicate = (node, predicate) => {
  * @returns {void}
  */
 function traverseNode(node, predicate, result) {
-  if (predicate(node)) {
-    result.push(node);
-  }
+	if (predicate(node)) {
+		result.push(node)
+	}
 
-  ts.forEachChild(node, (childNode) =>
-    traverseNode(childNode, predicate, result)
-  );
+	ts.forEachChild(node, (childNode) =>
+		traverseNode(childNode, predicate, result)
+	)
 }

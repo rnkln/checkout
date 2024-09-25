@@ -1,3 +1,3 @@
-export * from './Button';
-export * from './ButtonBase';
-export * from './ButtonWithLoading';
+export * from './Button'
+export * from './ButtonBase'
+export * from './ButtonWithLoading'

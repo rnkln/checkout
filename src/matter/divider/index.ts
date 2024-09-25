@@ -1,2 +1,2 @@
-export * from './Divider';
-export * from './Divider.css';
+export * from './Divider'
+export * from './Divider.css'

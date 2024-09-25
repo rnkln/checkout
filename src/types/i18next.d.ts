@@ -1,11 +1,11 @@
-import 'i18next';
+import 'i18next'
 
-import { defaultNS, resources } from '../features/bootstrap/Localization';
+import type { defaultNS, resources } from '../features/bootstrap/Localization'
 
 declare module 'i18next' {
-  interface CustomTypeOptions {
-    returnNull: false;
-    defaultNS: typeof defaultNS;
-    resources: (typeof resources)['en'];
-  }
+	type CustomTypeOptions = {
+		returnNull: false
+		defaultNS: typeof defaultNS
+		resources: (typeof resources)['en']
+	}
 }

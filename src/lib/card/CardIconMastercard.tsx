@@ -1,31 +1,31 @@
-import { CSSProperties } from 'react';
+import type { CSSProperties } from 'react'
 
-import IconDefault from './CardIconMastercard.svg';
-import IconGrey from './CardIconMastercardGrey.svg';
+import IconDefault from './CardIconMastercard.svg'
+import IconGrey from './CardIconMastercardGrey.svg'
 
 export type CardIconMastercardProps = {
-  color?: 'default' | 'grey';
-  style?: CSSProperties;
-  height?: number;
-  className?: string;
-};
+	color?: 'default' | 'grey'
+	style?: CSSProperties
+	height?: number
+	className?: string
+}
 
 export const CardIconMastercard = ({
-  color = 'default',
-  style,
-  height = 24,
-  className,
+	color = 'default',
+	style,
+	height = 24,
+	className
 }: CardIconMastercardProps) => {
-  const Icon = color === 'default' ? IconDefault : IconGrey;
+	const Icon = color === 'default' ? IconDefault : IconGrey
 
-  return (
-    <Icon
-      role="presentation"
-      height={height}
-      style={{ display: 'block', ...style }}
-      className={className}
-      aria-hidden
-      data-test-id="card-icon-mastercard"
-    />
-  );
-};
+	return (
+		<Icon
+			role="presentation"
+			height={height}
+			style={{ display: 'block', ...style }}
+			className={className}
+			aria-hidden
+			data-test-id="card-icon-mastercard"
+		/>
+	)
+}

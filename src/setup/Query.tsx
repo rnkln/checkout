@@ -1,26 +1,26 @@
-import { useMemo, ReactNode } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useMemo, type ReactNode } from 'react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export type QueryProps = {
-  children: ReactNode;
-};
+	children: ReactNode
+}
 
 export const Query = ({ children }: QueryProps) => {
-  const client = useQueryClient();
+	const client = useQueryClient()
 
-  return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
-};
+	return <QueryClientProvider client={client}>{children}</QueryClientProvider>
+}
 
 const useQueryClient = () =>
-  useMemo(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            retry: false,
-            refetchOnWindowFocus: false,
-          },
-        },
-      }),
-    []
-  );
+	useMemo(
+		() =>
+			new QueryClient({
+				defaultOptions: {
+					queries: {
+						retry: false,
+						refetchOnWindowFocus: false
+					}
+				}
+			}),
+		[]
+	)

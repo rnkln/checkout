@@ -1,7 +1,0 @@
-services:
-  mock:
-    build:
-      context: ./
-      dockerfile: Dockerfile.mock
-    ports:
-      - 3001:3001

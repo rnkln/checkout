@@ -1,11 +1,11 @@
-import { style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css'
 
 export const textifeldAdornmentRoot = style({
-  display: 'block',
-  marginInlineEnd: 16,
-  selectors: {
-    '&.field': {
-      marginBlockStart: 17,
-    },
-  },
-});
+	display: 'block',
+	marginInlineEnd: 16,
+	selectors: {
+		'&.field': {
+			marginBlockStart: 17
+		}
+	}
+})

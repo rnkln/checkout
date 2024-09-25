@@ -1,34 +1,44 @@
 {
-  "compilerOptions": {
-    "lib": ["esnext", "dom", "dom.iterable"],
-    "strict": true,
-    "noEmit": true,
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "incremental": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "allowJs": true,
-    "jsx": "preserve",
-    "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@lib/*": ["./src/lib/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@setup/*": ["./src/setup/*"],
-      "@matter/*": ["./src/matter/*"],
-      "@public/*": ["./public/*"],
-      "@features/*": ["./src/features/*"]
-    },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
-  },
-  "include": ["next-env.d.ts", "pages/", "src/", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+	"compilerOptions": {
+		"lib": ["esnext", "dom", "dom.iterable"],
+		"strict": true,
+		"noEmit": true,
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"incremental": true,
+		"isolatedModules": true,
+		"esModuleInterop": true,
+		"allowJs": true,
+		"jsx": "preserve",
+		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"verbatimModuleSyntax": true,
+		"paths": {
+			"@lib/*": ["./src/lib/*"],
+			"@utils/*": ["./src/utils/*"],
+			"@setup/*": ["./src/setup/*"],
+			"@matter/*": ["./src/matter/*"],
+			"@public/*": ["./public/*"],
+			"@features/*": ["./src/features/*"]
+		},
+		"plugins": [
+			{
+				"name": "next"
+			}
+		]
+	},
+	"include": [
+		".next/types/**/*.ts",
+		"next-env.d.ts",
+		"instrumentation.ts",
+		"src/**/*.ts",
+		"src/**/*.tsx",
+		"mock/**/*.ts",
+		"pages/**/*.ts",
+		"pages/**/*.tsx"
+	],
+	"exclude": ["node_modules"]
 }

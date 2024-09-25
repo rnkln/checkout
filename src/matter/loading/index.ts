@@ -1,2 +1,2 @@
-export * from './Ellipsis';
-export * from './Spinner';
+export * from './Ellipsis'
+export * from './Spinner'

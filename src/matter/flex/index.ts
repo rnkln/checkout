@@ -1,2 +1,2 @@
-export * from './Flex';
-export * from './Flex.css';
+export * from './Flex'
+export * from './Flex.css'
