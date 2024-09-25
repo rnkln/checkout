@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useMutation, type UseMutationOptions } from '@tanstack/react-query'
-import { useEnvironment } from '@setup/use_environment'
 import { usePaymentFetch } from '@features/payment/client/use_payment_fetch'
+import { useVaultEndpoint } from './use_vault_endpoint'
 
 export type VaultInput = {
 	type: 'pcn' | 'pcsc'
@@ -18,7 +18,7 @@ export type UseVaultOptions = Omit<
 >
 
 export const useVault = (options?: UseVaultOptions) => {
-	const VAULT_API_ENDPOINT = useEnvironment('VAULT_API_ENDPOINT')
+	const VAULT_API_ENDPOINT = useVaultEndpoint()
 	const fetch = usePaymentFetch()
 	const mutation = useCallback(
 		async (input: VaultInput[]) => {
