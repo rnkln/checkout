@@ -1,12 +1,12 @@
 <!doctype html>
 <html>
-  <body>
-    <button id="button">Continue</button>
+	<body>
+		<button id="button">Continue</button>
 
-    <script>
-      document.getElementById('button').addEventListener('click', () => {
-        window.parent.postMessage({ hints: ['hint-from-iframe'] }, '*');
-      });
-    </script>
-  </body>
+		<script>
+			document.getElementById('button').addEventListener('click', () => {
+				window.parent.postMessage({ hints: ['hint-from-iframe'] }, '*')
+			})
+		</script>
+	</body>
 </html>

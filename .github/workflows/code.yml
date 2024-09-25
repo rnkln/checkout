@@ -1,38 +1,38 @@
 name: Code
 
 on:
-  pull_request:
-    branches:
-      - master
+    pull_request:
+        branches:
+            - master
 
 env:
-  BUN_ENV: production
-  FORCE_COLOR: 1
+    BUN_ENV: production
+    FORCE_COLOR: 1
 
 permissions:
-  contents: read
+    contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-  job:
-    name: ${{ matrix.script }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        script: [lint, check, format]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+    job:
+        name: ${{ matrix.script }}
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                script: [lint, check, format]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
-      - name: Tools
-        uses: asdf-vm/actions/install@05e0d2ed97b598bfce82fd30daf324ae0c4570e6 # v3.0.2
+            - name: Tools
+              uses: asdf-vm/actions/install@05e0d2ed97b598bfce82fd30daf324ae0c4570e6 # v3.0.2
 
-      - name: Install
-        run: bun install
+            - name: Install
+              run: bun install
 
-      - name: Run ${{ matrix.script }}
-        run: bun run ${{ matrix.script }}
+            - name: Run ${{ matrix.script }}
+              run: bun run ${{ matrix.script }}

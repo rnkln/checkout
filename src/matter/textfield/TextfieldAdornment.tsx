@@ -1,18 +1,18 @@
-import { ReactNode } from 'react';
-import clsx from 'clsx';
+import type { ReactNode } from 'react'
+import clsx from 'clsx'
 
-import * as classes from './TextFieldAdornment.css';
+import * as classes from './TextFieldAdornment.css'
 
 export type TextfieldAdornmentProps = {
-  alignment?: 'field' | 'center';
-  children: ReactNode;
-};
+	alignment?: 'field' | 'center'
+	children: ReactNode
+}
 
 export const TextfieldAdornment = ({
-  alignment = 'field',
-  children,
+	alignment = 'field',
+	children
 }: TextfieldAdornmentProps) => {
-  const className = clsx(classes.textifeldAdornmentRoot, alignment);
+	const className = clsx(classes.textifeldAdornmentRoot, alignment)
 
-  return <span className={className}>{children}</span>;
-};
+	return <span className={className}>{children}</span>
+}

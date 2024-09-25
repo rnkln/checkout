@@ -22,8 +22,10 @@
 !.gitignore
 !.tool-versions
 !bun.lockb
+!eslint.config.js
 !instrumentation.ts
 !next.config.js
 !package.json
+!prettier.config.js
 !README.md
 !tsconfig.json

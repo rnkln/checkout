@@ -1,28 +1,28 @@
-import { useCallback } from 'react';
+import { useCallback } from 'react'
 
 export const usePaymentFetch = () =>
-  useCallback(
-    async (
-      input: URL | RequestInfo,
-      { headers, ...init }: RequestInit = {}
-    ) => {
-      try {
-        const response = await fetch(input, {
-          ...init,
-          headers: {
-            ...headers,
-            'x-forwarded-referer': document.referrer,
-          },
-        });
+	useCallback(
+		async (
+			input: URL | RequestInfo,
+			{ headers, ...init }: RequestInit = {}
+		) => {
+			try {
+				const response = await fetch(input, {
+					...init,
+					headers: {
+						...headers,
+						'x-forwarded-referer': document.referrer
+					}
+				})
 
-        if (!response.ok) {
-          throw new Error();
-        }
+				if (!response.ok) {
+					throw new Error()
+				}
 
-        return response;
-      } catch (error) {
-        throw new Error('An unexpected error occured');
-      }
-    },
-    []
-  );
+				return response
+			} catch (error) {
+				throw new Error('An unexpected error occured')
+			}
+		},
+		[]
+	)

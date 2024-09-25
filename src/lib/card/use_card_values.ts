@@ -1,22 +1,22 @@
-import { useMemo } from 'react';
+import { useMemo } from 'react'
 
 export type CardFormValues = {
-  'cc-number': string;
-  'cc-exp': string;
-  'cc-csc': string;
-};
+	'cc-number': string
+	'cc-exp': string
+	'cc-csc': string
+}
 
-export type CardFormValuesPartial = Partial<CardFormValues>;
+export type CardFormValuesPartial = Partial<CardFormValues>
 
 export const useCardDefaultValues = (
-  values: CardFormValuesPartial = {}
+	values: CardFormValuesPartial = {}
 ): CardFormValues =>
-  useMemo(
-    () => ({
-      'cc-number': '',
-      'cc-exp': '',
-      'cc-csc': '',
-      ...values,
-    }),
-    [values]
-  );
+	useMemo(
+		() => ({
+			'cc-number': '',
+			'cc-exp': '',
+			'cc-csc': '',
+			...values
+		}),
+		[values]
+	)

@@ -1,17 +1,17 @@
-import { ChevronRight } from '../icon';
+import { ChevronRight } from '../icon'
 
 export type AccordionChevronProps = {
-  expanded: boolean;
-  className?: string;
-};
+	expanded: boolean
+	className?: string
+}
 
 export const AccordionChevron = ({
-  expanded,
-  className,
+	expanded,
+	className
 }: AccordionChevronProps) => (
-  <ChevronRight
-    color="secondary"
-    rotate={expanded ? 90 : 0}
-    className={className}
-  />
-);
+	<ChevronRight
+		color="secondary"
+		rotate={expanded ? 90 : 0}
+		className={className}
+	/>
+)

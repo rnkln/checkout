@@ -1,34 +1,34 @@
-import { useMemo } from 'react';
-import { useRouter } from 'next/router';
+import { useMemo } from 'react'
+import { useRouter } from 'next/router'
 
 export type ChallengeParams = {
-  id?: string;
-  locale?: string;
-  redirect?: string;
-  strategy?: 'auto' | 'manual';
-};
+	id?: string
+	locale?: string
+	redirect?: string
+	strategy?: 'auto' | 'manual'
+}
 
 export const useChallengeParams = () => {
-  const router = useRouter();
+	const router = useRouter()
 
-  return useMemo(() => {
-    const params = new URLSearchParams(router.asPath.split('?')[1]);
+	return useMemo(() => {
+		const params = new URLSearchParams(router.asPath.split('?')[1])
 
-    return {
-      id: asString(params.get('id')),
-      locale: asString(params.get('locale')),
-      redirect: asString(params.get('redirect')),
-      strategy: asStrategy(params.get('strategy')),
-    };
-  }, [router.asPath]);
-};
+		return {
+			id: asString(params.get('id')),
+			locale: asString(params.get('locale')),
+			redirect: asString(params.get('redirect')),
+			strategy: asStrategy(params.get('strategy'))
+		}
+	}, [router.asPath])
+}
 
-const asString = (value: string | null) => value ?? undefined;
+const asString = (value: string | null) => value ?? undefined
 
 const asStrategy = (value: string | null) => {
-  if (!value && value !== 'auto' && value !== 'manual') {
-    return undefined;
-  }
+	if (!value && value !== 'auto' && value !== 'manual') {
+		return undefined
+	}
 
-  return value.toLocaleLowerCase() as 'auto' | 'manual';
-};
+	return value.toLocaleLowerCase() as 'auto' | 'manual'
+}

@@ -1,34 +1,36 @@
-import {
-  Hint,
-  PollChallenge as PollChallengeType,
-} from '../client/payment_types';
-import { useEffect } from 'react';
+import type {
+	Hint,
+	PollChallenge as PollChallengeType
+} from '../client/payment_types'
+import { useEffect } from 'react'
 
 export type PollChallengeProps = {
-  challenge: PollChallengeType;
-  onResolve: (hints?: Array<Hint>) => void;
-};
+	challenge: PollChallengeType
+	onResolve: (hints?: Hint[]) => void
+}
 
 export const PollChallenge = ({ challenge, onResolve }: PollChallengeProps) => {
-  useEffect(() => {
-     const interval = setInterval(async () => {
-      const now = new Date();
-      const threshold = new Date(challenge.notBefore);
+	useEffect(() => {
+		const fetchData = async () => {
+			const now = new Date()
+			const threshold = new Date(challenge.notBefore)
 
-      if(now > threshold) {
-        const response = await fetch(challenge.url);
-        const result = await response.json();
-  
-        if (result.hints) {
-          clearInterval(interval)
-          onResolve(result.hints)
-        }
-      }
-    }, challenge.interval);
+			if (now > threshold) {
+				const response = await fetch(challenge.url)
+				const result = (await response.json()) as { hints?: Hint[] }
 
-    return () => clearInterval(interval);
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, []);
+				if (result.hints) {
+					onResolve(result.hints)
+				}
+			}
+		}
 
-  return null;
-};
+		// eslint-disable-next-line @typescript-eslint/no-misused-promises
+		const interval = setInterval(fetchData, challenge.interval)
+
+		return () => clearInterval(interval)
+		/* eslint-disable-next-line react-hooks/exhaustive-deps */
+	}, [])
+
+	return null
+}
