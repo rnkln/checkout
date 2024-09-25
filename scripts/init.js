@@ -7,7 +7,7 @@ const directory = p.dirname(filename)
 
 const env = {
 	NEXT_TELEMETRY_DISABLED: 1,
-	NEXT_PUBLIC_PAYMENTS_API_ENDPOINT: 'http://localhost:3001/api'
+	NEXT_PUBLIC_API_ENDPOINT: 'http://localhost:3001/api'
 }
 
 const envFile = p.resolve(directory, '..', '.env.local')
