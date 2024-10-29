@@ -28,4 +28,5 @@
 !package.json
 !prettier.config.js
 !README.md
+!renovate.json
 !tsconfig.json
