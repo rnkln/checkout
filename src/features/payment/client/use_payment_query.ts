@@ -14,7 +14,7 @@ export type UsePaymentQueryOptions<T> = Omit<
 	'queryKey' | 'queryFn'
 >
 
-export const usePaymentQuery = (path: string) => {
+export const usePaymentQuery = <T>(path: string) => {
 	const fetch = usePaymentFetch()
 	const endpoint = usePaymentEndpoint(path)
 	const key: PaymentQueryKey = ['GET', path]
@@ -29,7 +29,7 @@ export const usePaymentQuery = (path: string) => {
 				}
 			})
 
-			return response.json()
+			return response.json() as T
 		},
 		[endpoint, fetch]
 	)

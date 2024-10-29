@@ -34,6 +34,7 @@ export const MobilePayButton = ({
 		<ButtonWithLoading
 			busy={busy}
 			aria-disabled={busy}
+			// eslint-disable-next-line jsx-a11y/no-autofocus
 			autoFocus={autoFocus}
 			className={className}
 			data-test-id="mobile-pay-button"

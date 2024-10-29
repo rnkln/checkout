@@ -52,7 +52,7 @@ export const usePayment = (
 	id: string,
 	options?: UsePaymentQueryOptions<PaymentResponse>
 ) => {
-	const { key, query } = usePaymentQuery(id)
+	const { key, query } = usePaymentQuery<PaymentResponse>(id)
 	const result = useQuery(key, query, options)
 
 	return { key, ...result }
@@ -61,7 +61,7 @@ export const usePayment = (
 export const usePaymentConfig = (
 	options?: UsePaymentQueryOptions<PaymentConfigResponse>
 ) => {
-	const { key, query } = usePaymentQuery('config')
+	const { key, query } = usePaymentQuery<PaymentConfigResponse>('config')
 	const result = useQuery(key, query, options)
 
 	return { key, ...result }
@@ -70,7 +70,10 @@ export const usePaymentConfig = (
 export const usePaymentPost = (
 	options?: UsePaymentMutationOptions<PaymentPostResponse, PaymentPostInput>
 ) => {
-	const { mutation } = usePaymentMutation<PaymentPostInput>('POST', '')
+	const { mutation } = usePaymentMutation<
+		PaymentPostResponse,
+		PaymentPostInput
+	>('POST', '')
 
 	return useMutation(mutation, options)
 }
@@ -79,7 +82,10 @@ export const usePaymentPatch = (
 	id: string,
 	options?: UsePaymentMutationOptions<PaymentPatchResponse, PaymentPatchInput>
 ) => {
-	const { mutation } = usePaymentMutation<PaymentPatchInput>('PATCH', id)
+	const { mutation } = usePaymentMutation<
+		PaymentPatchResponse,
+		PaymentPatchInput
+	>('PATCH', id)
 
 	return useMutation(mutation, options)
 }

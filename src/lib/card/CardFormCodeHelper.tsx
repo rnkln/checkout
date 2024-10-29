@@ -40,6 +40,7 @@ export const CardFormCodeHelper = ({ target }: CardFormCodeHelperProps) => {
 				<HelpCircleOutline color="quaternary" />
 			</ButtonBase>
 			<Portal target={target}>
+				{/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
 				<div className={illustrationClassName} onClick={handleHide}>
 					<Illustration
 						ref={ref}

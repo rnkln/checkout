@@ -46,7 +46,7 @@ export const TextfieldBase = forwardRef<HTMLInputElement, TextfieldBaseProps>(
 			required,
 			role,
 			spellCheck,
-			tabIndex,
+			tabIndex = 1,
 			type = 'text',
 			value,
 			'aria-activedescendant': ariaActiveDescendant,
@@ -82,9 +82,11 @@ export const TextfieldBase = forwardRef<HTMLInputElement, TextfieldBaseProps>(
 
 		return (
 			<div className={className} {...otherProps}>
+				{/* eslint-disable-next-line jsx-a11y/aria-activedescendant-has-tabindex */}
 				<input
 					autoComplete={autoComplete}
 					autoCorrect={autoCorrect}
+					// eslint-disable-next-line jsx-a11y/no-autofocus
 					autoFocus={autoFocus}
 					className={inputClassName}
 					disabled={disabled}

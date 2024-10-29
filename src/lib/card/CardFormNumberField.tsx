@@ -39,6 +39,7 @@ export const CardFormNumberField = ({
 		<TextFieldWithMask
 			ref={field.ref}
 			adornmentEnd={icon}
+			// eslint-disable-next-line jsx-a11y/no-autofocus
 			autoFocus={autoFocus}
 			inputMode="numeric"
 			label={t(cardFormNumberFieldName)}

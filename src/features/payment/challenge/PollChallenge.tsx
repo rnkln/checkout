@@ -29,8 +29,7 @@ export const PollChallenge = ({ challenge, onResolve }: PollChallengeProps) => {
 		const interval = setInterval(fetchData, challenge.interval)
 
 		return () => clearInterval(interval)
-		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [])
+	}, [challenge.interval, challenge.notBefore, challenge.url, onResolve])
 
 	return null
 }

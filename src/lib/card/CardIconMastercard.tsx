@@ -16,6 +16,7 @@ export const CardIconMastercard = ({
 	height = 24,
 	className
 }: CardIconMastercardProps) => {
+	// eslint-disable-next-line no-useless-assignment
 	const Icon = color === 'default' ? IconDefault : IconGrey
 
 	return (

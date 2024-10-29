@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactElement } from 'react'
+import { useState, useEffect, type JSX, type ReactElement } from 'react'
 
 export type RoutingProps = {
 	children: ReactElement

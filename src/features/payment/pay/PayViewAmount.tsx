@@ -49,6 +49,7 @@ export const PayViewAmount = ({
 				value={decimal}
 				name="amount"
 				label={t('pay-amount')}
+				// eslint-disable-next-line jsx-a11y/no-autofocus
 				autoFocus
 				onChange={handleChange}
 				onKeyDown={handleKeyDown}

@@ -20,7 +20,7 @@ export const usePaymentFetch = () =>
 				}
 
 				return response
-			} catch (error) {
+			} catch {
 				throw new Error('An unexpected error occured')
 			}
 		},
