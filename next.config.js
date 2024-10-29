@@ -3,7 +3,6 @@ import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
 const withVanillaExtract = createVanillaExtractPlugin()
 
 export default withVanillaExtract({
-	output: 'export',
 	swcMinify: true,
 	generateEtags: false,
 	reactStrictMode: true,
