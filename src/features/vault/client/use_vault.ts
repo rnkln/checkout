@@ -37,7 +37,9 @@ export const useVault = (options?: UseVaultOptions) => {
 
 			const responses = await Promise.all(createsPromises)
 			const results = await Promise.all<VaultResponse>(
-				responses.map(async (response) => response.json())
+				responses.map(
+					async (response) => (await response.json()) as VaultResponse
+				)
 			)
 
 			return results

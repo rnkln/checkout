@@ -54,11 +54,11 @@ export const IFrameChallenge = ({
 		return () => {
 			window.removeEventListener('message', handler)
 		}
-		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [])
+	}, [onResolve])
 
 	return (
 		<>
+			{/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions */}
 			<iframe
 				ref={iref}
 				src={method.toUpperCase() === 'GET' ? url : undefined}

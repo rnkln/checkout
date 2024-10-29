@@ -19,7 +19,9 @@ export default async function handler(
 		const data = (await response.json()) as Record<string, unknown>
 
 		res.status(response.status).json(data)
-	} catch (error) {
-		res.status(500).json({ error: 'Error connecting to backend' })
+	} catch {
+		res.status(500).json({
+			error: 'Error connecting to backend'
+		})
 	}
 }

@@ -126,6 +126,7 @@ const renderMethod = (
 			return (
 				<CardForm
 					amount={amount}
+					// eslint-disable-next-line jsx-a11y/no-autofocus
 					autoFocus={props.autoFocus}
 					busy={props.busy}
 					onSubmit={(values) =>

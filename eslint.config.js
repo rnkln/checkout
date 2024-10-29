@@ -1,10 +1,6 @@
-import { core, react, typescript } from '@klnjs/eslint-config'
+import core from '@klnjs/eslint-config/core'
+import typescript from '@klnjs/eslint-config/typescript'
+import react from '@klnjs/eslint-config/react'
+import ignores from '@klnjs/eslint-config/ignores'
 
-export default [
-	core,
-	react,
-	typescript,
-	{
-		ignores: ['.next']
-	}
-]
+export default [core, typescript, react, ignores]

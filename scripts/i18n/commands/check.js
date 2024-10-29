@@ -1,4 +1,3 @@
-/* global Intl */
 /* global process */
 
 import p from 'path'

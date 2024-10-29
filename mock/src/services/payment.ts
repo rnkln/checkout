@@ -20,7 +20,7 @@ export const payments = new Store<Payment>()
 export const createPaymentService = (endpoint: string) => [
 	http.get<never, never, PaymentConfigResponse, `${typeof endpoint}/config`>(
 		`${endpoint}/config`,
-		async () =>
+		() =>
 			HttpResponse.json({
 				methods: ['card', 'mobilePay', 'applePay'],
 				currency: 'DKK',
@@ -37,14 +37,14 @@ export const createPaymentService = (endpoint: string) => [
 		never,
 		PaymentResponse | PaymentErrorResponse,
 		`${typeof endpoint}/:id`
-	>(`${endpoint}/:id`, async ({ request, params }) => {
+	>(`${endpoint}/:id`, ({ request, params }) => {
 		const error = request.headers.get(
 			'x-mock-error-code'
 		) as null | PaymentErrorCode
 		const payment = payments.find((p) => p.id === params.id)
 
 		if (!payment) {
-			// eslint-disable-next-line @typescript-eslint/no-throw-literal
+			// eslint-disable-next-line @typescript-eslint/only-throw-error
 			throw new HttpResponse(null, { status: 404 })
 		}
 
@@ -102,12 +102,12 @@ export const createPaymentService = (endpoint: string) => [
 		const payment = payments.find((p) => p.id === params.id)
 
 		if (!payment) {
-			// eslint-disable-next-line @typescript-eslint/no-throw-literal
+			// eslint-disable-next-line @typescript-eslint/only-throw-error
 			throw new HttpResponse(null, { status: 404 })
 		}
 
 		if (!hints) {
-			// eslint-disable-next-line @typescript-eslint/no-throw-literal
+			// eslint-disable-next-line @typescript-eslint/only-throw-error
 			throw new HttpResponse(null, { status: 500 })
 		}
 

@@ -15,8 +15,7 @@ export const RedirectChallenge = ({ challenge }: RedirectChallengeProps) => {
 		url.search = params.toString()
 
 		window.location.assign(url.toString())
-		/* eslint-disable-next-line react-hooks/exhaustive-deps */
-	}, [])
+	}, [challenge.url])
 
 	return null
 }

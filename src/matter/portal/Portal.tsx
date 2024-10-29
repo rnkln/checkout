@@ -1,4 +1,4 @@
-import { type ReactNode, Children, isValidElement } from 'react'
+import { Children, isValidElement, type JSX, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 
 export type PortalProps = {

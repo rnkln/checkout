@@ -66,6 +66,7 @@ export const CardForm = ({
 			>
 				<div className={classes.grid}>
 					<CardFormNumberField
+						// eslint-disable-next-line jsx-a11y/no-autofocus
 						autoFocus={autoFocus}
 						disabled={busy}
 						className={classes.number}

@@ -17,7 +17,8 @@ export type UsePaymentMutationOptions<T, V> = Omit<
 	'mutationKey' | 'mutationFn'
 >
 
-export const usePaymentMutation = <V>(
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+export const usePaymentMutation = <T, V>(
 	method: PaymentMutationMethod,
 	path: string,
 	{ accept = 'application/json' }: PaymentMutationOptions = {}
@@ -36,10 +37,10 @@ export const usePaymentMutation = <V>(
 			})
 
 			if (accept === 'text/plain') {
-				return response.text()
+				return response.text() as T
 			}
 
-			return response.json()
+			return response.json() as T
 		},
 		[endpoint, method, accept, fetch]
 	)
