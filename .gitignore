@@ -18,7 +18,7 @@
 # Include these files
 !.browserslistrc
 !.editorconfig
-!.env
+!.env.example
 !.gitignore
 !.tool-versions
 !bun.lockb

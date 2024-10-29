@@ -1,7 +1,7 @@
-import { http, delay, type DelayMode } from 'msw'
+import type { Request, Response, NextFunction } from 'express'
 
-export const createDelay = (mode: DelayMode) => [
-	http.all('*', async () => {
-		await delay(mode)
-	})
-]
+export const createDelayMiddleware =
+	(timeout: number = 200) =>
+	(req: Request, res: Response, next: NextFunction) => {
+		setTimeout(next, timeout)
+	}
