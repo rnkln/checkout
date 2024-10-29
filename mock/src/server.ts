@@ -10,16 +10,15 @@ import { createChallengeService } from './services/challenge'
 const app = express()
 const url = new URL(process.env.NEXT_PUBLIC_API_ENDPOINT ?? '')
 const port = 3001
-const pathname = url.pathname
 
 app.use(createCorsMiddleware())
 app.use(createDelayMiddleware(200))
 app.use(
 	createMiddleware(
 		...[
-			...createVaultService(pathname + '/vault'),
-			...createPaymentService(pathname + '/payments'),
-			...createChallengeService(pathname + '/challenge')
+			...createVaultService(`${url.pathname}/vault`),
+			...createPaymentService(`${url.pathname}/payments`),
+			...createChallengeService(`${url.pathname}/challenge`)
 		]
 	)
 )
