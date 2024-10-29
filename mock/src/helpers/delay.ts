@@ -24,6 +24,5 @@ export const parseDelayFromString = (value: string): Delay => {
 	)
 }
 
-const getRealisticDelay = () => {
-	return Math.floor(Math.random() * (MAX_DELAY - MIN_DELAY) + MIN_DELAY)
-}
+const getRealisticDelay = () =>
+	Math.floor(Math.random() * (MAX_DELAY - MIN_DELAY) + MIN_DELAY)
