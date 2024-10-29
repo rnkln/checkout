@@ -6,9 +6,8 @@ export const MAX_DELAY = 400
 export type Delay = 'realistic' | number
 
 export const createDelayMiddleware =
-	(delay: Delay) => (req: Request, res: Response, next: NextFunction) => {
+	(delay: Delay) => (req: Request, res: Response, next: NextFunction) =>
 		setTimeout(next, delay === 'realistic' ? getRealisticDelay() : delay)
-	}
 
 export const parseDelayFromString = (value: string): Delay => {
 	if (value === 'realistic') {
