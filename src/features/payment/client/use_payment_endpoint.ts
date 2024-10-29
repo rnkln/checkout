@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
-import { useEnvironment } from '@setup/use_environment'
 
 export const usePaymentEndpoint = (...paths: (string | undefined)[]) => {
-	const API_ROOT = useEnvironment('API_ENDPOINT')
+	const API_ROOT = '/api'
 
 	return useMemo(
 		() =>
