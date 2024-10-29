@@ -16,7 +16,7 @@ export default async function handler(
 			headers: req.headers as HeadersInit
 		})
 
-		const data = await response.json()
+		const data = (await response.json()) as Record<string, unknown>
 
 		res.status(response.status).json(data)
 	} catch (error) {
